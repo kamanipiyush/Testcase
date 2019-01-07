@@ -1,0 +1,33 @@
+import os
+import sys
+import json
+argLen = len(sys.argv)  # Reading the number of arguments passed to the program
+filesList = []
+
+tempDict = {}
+if argLen < 2:
+    print ("ERROR: Program takes exactly 1 argument 0 given.")
+    sys.exit()
+elif argLen > 2:
+    print ("ERROR: Program takes exactly 1 argument " + argLen + " given")
+    sys.exit()
+else:
+    rootDir = sys.argv[1]
+    if os.path.exists(rootDir):
+        
+        for root, _, files in os.walk(rootDir):
+            for file in files:
+                filePath = os.path.join(root, file)
+                fileSize = os.path.getsize(filePath)
+                tempDict[filePath] = fileSize
+                filesList.append(tempDict)
+                tempDict = {}
+            
+    else:
+        print ('ERROR: Path given does not exist')
+        sys.exit()
+    filesDict ={}
+    filesDict["files"] = filesList
+    fileJson = json.dumps(filesDict)
+    print (fileJson)
+    
